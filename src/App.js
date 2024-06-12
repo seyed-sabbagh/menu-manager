@@ -4,10 +4,10 @@ import menuData from './data/menuData.ts'; // Assuming you have the initial data
 
 function EditableMenu() {
   const [menu, setMenu] = useState(menuData);
-  const [newItem, setNewItem] = useState({ category: "", name: "", description: "", price: "" });
+  const [newItem, setNewItem] = useState({ category: "", name: "", description: "", price: "", pictureUrl: "" });
 
   const addItem = () => {
-    if (newItem.category && newItem.name && newItem.description && newItem.price) {
+    if (newItem.category && newItem.name && newItem.description && newItem.price && newItem.pictureUrl) {
       const newMenu = { ...menu };
 
       // Check if the category exists in the menu; if not, initialize it as an empty array
@@ -21,12 +21,13 @@ function EditableMenu() {
           id: newMenu[newItem.category].length + 1,
           name: newItem.name,
           description: newItem.description,
-          price: newItem.price
+          price: newItem.price,
+          pictureUrl: newItem.pictureUrl
         }
       ];
 
       setMenu(newMenu);
-      setNewItem({ category: "", name: "", description: "", price: "" });
+      setNewItem({ category: "", name: "", description: "", price: "", pictureUrl: "" });
     } else {
       alert("Please fill all fields.");
     }
@@ -52,39 +53,46 @@ function EditableMenu() {
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: 'auto', padding: '20px' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Edit Menu</h1>
-      <div style={{ display: 'flex', marginBottom: '20px' }}>
-      <input 
+      <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+        <input 
           type="text" 
           placeholder="Category" 
           value={newItem.category} 
           onChange={(e) => handleNewItemChange("category", e.target.value)} 
-          style={{ flex: 1, marginRight: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
+          style={{ marginBottom: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
         />
         <input 
           type="text" 
           placeholder="Name" 
           value={newItem.name} 
           onChange={(e) => handleNewItemChange("name", e.target.value)} 
-          style={{ flex: 1, marginRight: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
+          style={{ marginBottom: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
         />
         <input 
           type="text" 
           placeholder="Description" 
           value={newItem.description} 
           onChange={(e) => handleNewItemChange("description", e.target.value)} 
-          style={{ flex: 1, marginRight: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
+          style={{ marginBottom: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
         />
         <input 
           type="text" 
           placeholder="Price" 
           value={newItem.price} 
           onChange={(e) => handleNewItemChange("price", e.target.value)} 
-          style={{ flex: 1, marginRight: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
+          style={{ marginBottom: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
         />
-        <button onClick={addItem} style={{ padding: '8px 16px', backgroundColor: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer' }}>Add Item</button>
+        <input 
+          type="text" 
+          placeholder="Picture URL" 
+          value={newItem.pictureUrl} 
+          onChange={(e) => handleNewItemChange("pictureUrl", e.target.value)} 
+          style={{ marginBottom: '10px', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }} 
+        />
+        <button onClick={addItem} style={{ padding: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer' }}>Add Item</button>
       </div>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <button onClick={saveMenu} style={{ padding: '8px 16px', backgroundColor: '#008CBA', color: 'white', border: 'none', cursor: 'pointer' }}>Save Menu</button>
+        <button onClick={saveMenu} style={{ padding: '10px', backgroundColor: '#008CBA', color: 'white', border: 'none', cursor: 'pointer' }}>Save Menu</button>
       </div>
       <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
         <thead>
@@ -93,18 +101,22 @@ function EditableMenu() {
             <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Name</th>
             <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Description</th>
             <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Price</th>
+            <th style={{ padding: '8px', border: '1px solid #ddd', textAlign: 'left' }}>Picture</th>
           </tr>
         </thead>
         <tbody>
           {Object.keys(menu).map((category, index) => (
             <>
-              {index > 0 && <tr key={`separator-${index}`}><td colSpan="4" style={{ height: '10px' }}></td></tr>}
+              {index > 0 && <tr key={`separator-${index}`}><td colSpan="5" style={{ height: '10px' }}></td></tr>}
               {menu[category].map(item => (
                 <tr key={item.id}>
                   <td style={{ padding: '8px', border: '1px solid #ddd' }}>{category}</td>
                   <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.name}</td>
                   <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.description}</td>
                   <td style={{ padding: '8px', border: '1px solid #ddd' }}>{item.price}</td>
+                  <td style={{ padding: '8px', border: '1px solid #ddd' }}>
+                    <img src={item.pictureUrl} alt={item.name} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                  </td>
                 </tr>
               ))}
             </>
@@ -114,5 +126,5 @@ function EditableMenu() {
     </div>
   );
 }
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}></table>
+
 export default EditableMenu;
